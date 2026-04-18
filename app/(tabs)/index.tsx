@@ -21,102 +21,12 @@ import AnimatedReanimated, {
   withTiming,
 } from "react-native-reanimated";
 import MenuDrawer from "../../components/MenuDrawer";
+import LogoutButton from "@/components/logoutButton";
 
 const { width, height } = Dimensions.get("window");
 
 const categories = ["All", "Bubble Tea", "Milk Tea", "Fruit Tea", "Milkshakes"];
 
-// Vibrant gradient configurations for each slide
-// const gradientConfigs: Array<{
-//   colors: { color: string; stop: string }[];
-//   angle: number;
-// }> = [
-//   {
-//     // Slide 1 - Soft Serve: Deep blue → Royal blue
-//     colors: [
-//       { color: "#104bb9", stop: "0%" },
-//       { color: "#1B5DD5", stop: "100%" },
-//     ],
-//     angle: 45,
-//   },
-//   {
-//     // Slide 2 - Find Us: Blue → Purple blend
-//     colors: [
-//       { color: "#1B5DD5", stop: "0%" },
-//       { color: "#104bb9", stop: "100%" },
-//     ],
-//     angle: 90,
-//   },
-//   {
-//     // Slide 3 - Bubble Tea: Blue → Cyan/Teal
-//     colors: [
-//       { color: "#104bb9", stop: "0%" },
-//       { color: "#1B5DD5", stop: "100%" },
-//     ],
-//     angle: 135,
-//   },
-// ];
-
-// const gradientConfigs = [
-//   {
-//     colors: [
-//       { color: "#0a3ea8", stop: "0%" },
-//       { color: "#104bb9", stop: "30%" },
-//       { color: "#1B5DD5", stop: "65%" },
-//       { color: "#6ea8ff", stop: "100%" },
-//     ],
-//     angle: 135,
-//   },
-//   {
-//     colors: [
-//       { color: "#1B5DD5", stop: "0%" },
-//       { color: "#5b3fd1", stop: "50%" },
-//       { color: "#8b5cf6", stop: "100%" },
-//     ],
-//     angle: 180,
-//   },
-//   {
-//     colors: [
-//       { color: "#0f4fcf", stop: "0%" },
-//       { color: "#00c6ff", stop: "60%" },
-//       { color: "#00e0c6", stop: "100%" },
-//     ],
-//     angle: 120,
-//   },
-// ];
-
-// const gradientConfigs = [
-//   {
-//     colors: [
-//       { color: "#0a3ea8", stop: "0%" },
-//       { color: "#104bb9", stop: "25%" },
-//       { color: "#1B5DD5", stop: "60%" },
-//       { color: "#6ea8ff", stop: "100%" },
-//     ],
-//     angle: 135,
-//   },
-//   {
-//     colors: [
-//       { color: "#6ea8ff", stop: "100%" },
-//       { color: "#0a3ea8", stop: "0%" },
-//       { color: "#0a3ea8", stop: "20%" },
-//       { color: "#104bb9", stop: "45%" },
-//       { color: "#1B5DD5", stop: "75%" },
-
-//     ],
-//     angle: 180,
-//   },
-//   {
-//     colors: [
-//       { color: "#0a3ea8", stop: "0%" },
-//       { color: "#104bb9", stop: "20%" },
-//       { color: "#1B5DD5", stop: "50%" },
-//       { color: "#6ea8ff", stop: "80%" },
-//       { color: "#6ea8ff", stop: "100%" },
-//     ],
-//     angle: 120,
-//   },
-// ];
 
 const gradientConfigs = [
   {
@@ -448,7 +358,6 @@ export default function HomeScreen() {
   // Levitate mascot animation with rotation
   const mascotTranslateY = useSharedValue(0);
   const mascotRotate = useSharedValue(0);
-  const mascotShadowScale = useSharedValue(1);
   useEffect(() => {
     mascotTranslateY.value = withRepeat(
       withTiming(-18, { duration: 1800 }), // slower
@@ -457,11 +366,6 @@ export default function HomeScreen() {
     );
     mascotRotate.value = withRepeat(
       withTiming(-6, { duration: 900 }), // up: anticlockwise
-      -1,
-      true
-    );
-    mascotShadowScale.value = withRepeat(
-      withTiming(1.25, { duration: 1800 }), // matches levitation
       -1,
       true
     );
@@ -477,17 +381,6 @@ export default function HomeScreen() {
         { translateY: mascotTranslateY.value },
         { rotate: `${rotate}deg` },
       ],
-    };
-  });
-
-  // Mascot shadow animation style
-  const mascotShadowAnimStyle = useAnimatedStyle(() => {
-    const t = mascotTranslateY.value / -18; // 0 (bottom) to 1 (top)
-    const scale = 1.35 - 0.5 * t; // 1.35 (bottom), 0.85 (top)
-    const opacity = 0.32 - 0.14 * t; // 0.32 (bottom), 0.18 (top)
-    return {
-      transform: [{ scaleX: scale }, { scaleY: scale * 0.5 }],
-      opacity,
     };
   });
 
@@ -533,6 +426,7 @@ export default function HomeScreen() {
                 style={styles.textLogo}
                 resizeMode="contain" // Ensures text doesn't stretch weirdly
               />
+              <LogoutButton/>
             </View>
 
             <Pressable onPress={() => setDrawerVisible(true)}>
@@ -547,22 +441,6 @@ export default function HomeScreen() {
                 <Image
                   source={require("../../assets/mascot-sitting.avif")}
                   style={styles.mascotImage}
-                />
-              </AnimatedReanimated.View>
-              <AnimatedReanimated.View
-                style={[{ position: 'absolute', top: 140, left: 0, right: 0, alignItems: 'center', zIndex: -1 }, mascotShadowAnimStyle]}
-                pointerEvents="none"
-              >
-                {/* <View
-                  style={{ width: 80, height: 24, backgroundColor: '#000', borderRadius: 40, opacity: 0.28 }}
-                /> */}
-                <LinearGradient
-                  colors={['rgba(0,0,0,0.4)', 'transparent']} // Dense center to invisible edge
-                  style={{
-                    width: 80,
-                    height: 50,
-                    borderRadius: 100,
-                  }}
                 />
               </AnimatedReanimated.View>
             </View>
