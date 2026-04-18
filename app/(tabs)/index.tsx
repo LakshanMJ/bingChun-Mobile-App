@@ -1,10 +1,10 @@
+import LogoutButton from "@/components/logoutButton";
 import { Ionicons } from "@expo/vector-icons";
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { BlurView } from "expo-blur";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
-  Animated,
   Dimensions,
   Image,
   Pressable,
@@ -15,13 +15,13 @@ import {
 } from "react-native";
 import AnimatedReanimated, {
   Easing,
+  runOnJS,
   useAnimatedStyle,
   useSharedValue,
   withRepeat,
   withTiming,
 } from "react-native-reanimated";
 import MenuDrawer from "../../components/MenuDrawer";
-import LogoutButton from "@/components/logoutButton";
 
 const { width, height } = Dimensions.get("window");
 
@@ -252,23 +252,43 @@ export default function HomeScreen() {
   const [activeSlide, setActiveSlide] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState("All");
 
-  const progressAnim = useRef(new Animated.Value(0)).current;
+  
+
   const SCREEN_HEIGHT = height;
   const tabBarHeight = useBottomTabBarHeight();
 
-  useEffect(() => {
-    progressAnim.setValue(0);
+  const progressAnim = useSharedValue(0);
 
-    Animated.timing(progressAnim, {
-      toValue: 1,
-      duration: 5000,
-      useNativeDriver: false,
-    }).start(({ finished }) => {
-      if (finished) {
-        setActiveSlide((prev) => (prev + 1) % slides.length);
-      }
-    });
-  }, [activeSlide]);
+  // useEffect(() => {
+  //   progressAnim.setValue(0);
+
+  //   Animated.timing(progressAnim, {
+  //     toValue: 1,
+  //     duration: 5000,
+  //     useNativeDriver: false,
+  //   }).start(({ finished }) => {
+  //     if (finished) {
+  //       setActiveSlide((prev) => (prev + 1) % slides.length);
+  //     }
+  //   });
+  // }, [activeSlide]);
+
+  useEffect(() => {
+  progressAnim.value = 0;
+  progressAnim.value = withTiming(1, { 
+    duration: 5000, 
+    easing: Easing.linear 
+  }, (finished) => {
+    if (finished) {
+      // Use runOnJS to update state from the animation thread
+      runOnJS(setActiveSlide)((activeSlide + 1) % slides.length);
+    }
+  });
+}, [activeSlide]);
+
+const progressFillStyle = useAnimatedStyle(() => ({
+  width: progressAnim.value * 32, 
+}));
 
   const slide = slides[activeSlide];
 
@@ -370,19 +390,35 @@ export default function HomeScreen() {
       true
     );
   }, []);
-  const mascotAnimStyle = useAnimatedStyle(() => {
-    // Interpolate rotation based on translateY
-    // -18 (top) => -6deg, 0 (bottom) => 6deg
-    const rotate = mascotTranslateY.value < 0
-      ? -6 * (mascotTranslateY.value / -18) // up: -6deg
-      : 6 * (mascotTranslateY.value / 18);  // down: 6deg
-    return {
-      transform: [
-        { translateY: mascotTranslateY.value },
-        { rotate: `${rotate}deg` },
-      ],
-    };
-  });
+  // const mascotAnimStyle = useAnimatedStyle(() => {
+  //   // Interpolate rotation based on translateY
+  //   // -18 (top) => -6deg, 0 (bottom) => 6deg
+  //   const rotate = mascotTranslateY.value < 0
+  //     ? -6 * (mascotTranslateY.value / -18) // up: -6deg
+  //     : 6 * (mascotTranslateY.value / 18);  // down: 6deg
+  //   return {
+  //     transform: [
+  //       { translateY: mascotTranslateY.value },
+  //       { rotate: `${rotate}deg` },
+  //     ],
+  //   };
+  // });
+
+  // Change this style block
+const mascotAnimStyle = useAnimatedStyle(() => {
+  // Use a derived value approach for the rotation to keep it clean
+  const rotationValue = mascotTranslateY.value < 0
+    ? -6 * (mascotTranslateY.value / -18)
+    : 6 * (mascotTranslateY.value / 18);
+
+  return {
+    transform: [
+      { translateY: mascotTranslateY.value },
+      // Ensure the string is treated as a fresh value
+      { rotate: `${rotationValue}deg` as any }, 
+    ],
+  };
+});
 
   return (
     <View style={{ flex: 1 }}>
@@ -426,7 +462,7 @@ export default function HomeScreen() {
                 style={styles.textLogo}
                 resizeMode="contain" // Ensures text doesn't stretch weirdly
               />
-              <LogoutButton/>
+              <LogoutButton />
             </View>
 
             <Pressable onPress={() => setDrawerVisible(true)}>
@@ -457,26 +493,22 @@ export default function HomeScreen() {
           {/* BOTTOM */}
           <View style={styles.bottomRow}>
             <View style={{ flexDirection: "row", gap: 6 }}>
-              {slides.map((_, i) =>
-                i === activeSlide ? (
-                  <View key={i} style={styles.progressBar}>
-                    <Animated.View
-                      style={[
-                        styles.progressFill,
-                        {
-                          width: progressAnim.interpolate({
-                            inputRange: [0, 1],
-                            outputRange: [0, 32],
-                          }),
-                        },
-                      ]}
-                    />
-                  </View>
-                ) : (
-                  <View key={i} style={styles.progressDot} />
-                )
-              )}
-            </View>
+  {slides.map((_, i) =>
+    i === activeSlide ? (
+      <View key={i} style={styles.progressBar}>
+        {/* Use AnimatedReanimated here, NOT the standard Animated */}
+        <AnimatedReanimated.View
+          style={[
+            styles.progressFill,
+            progressFillStyle, // Use the style we created in Step 3
+          ]}
+        />
+      </View>
+    ) : (
+      <View key={i} style={styles.progressDot} />
+    )
+  )}
+</View>
           </View>
         </LinearGradient>
 

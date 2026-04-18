@@ -1,66 +1,67 @@
-import { router } from 'expo-router';
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
+import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-import { Animated, Easing, Image, KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
-import { Easing as ReanimatedEasing, useAnimatedStyle, useSharedValue, withRepeat, withTiming } from 'react-native-reanimated';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { Image, KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+// ✅ IMPORT ONLY REANIMATED (Removed standard Animated)
 import { login } from '@/components/utils/auth';
+import Animated, {
+  Easing,
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withSpring,
+  withTiming
+} from 'react-native-reanimated';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const mascot = require('../../assets/mascot-sitting.avif');
 
 export default function LoginScreen() {
-  // Fade-in animation
-  const fadeAnim = useState(new Animated.Value(0))[0];
+  // 1. Fixed Fade-in (Reanimated)
+  const fadeOpacity = useSharedValue(0);
   useEffect(() => {
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 700,
-      useNativeDriver: true,
-      easing: Easing.inOut(Easing.ease),
-    }).start();
+    fadeOpacity.value = withTiming(1, { duration: 700 });
   }, []);
 
-  // Mascot floating animation
+  const fadeStyle = useAnimatedStyle(() => ({
+    opacity: fadeOpacity.value,
+  }));
+
+  // 2. Mascot floating
   const mascotY = useSharedValue(0);
   useEffect(() => {
     mascotY.value = withRepeat(
-      withTiming(-18, { duration: 1600, easing: ReanimatedEasing.inOut(ReanimatedEasing.ease) }),
+      withTiming(-18, { duration: 1600, easing: Easing.inOut(Easing.ease) }),
       -1,
       true
     );
   }, []);
+
   const mascotAnimStyle = useAnimatedStyle(() => ({
     transform: [{ translateY: mascotY.value }],
   }));
 
-  // Mascot shadow animation
+  // 3. Shadow fix
   const mascotShadowAnimStyle = useAnimatedStyle(() => {
-    const t = mascotY.value / -18; // 0 (bottom) to 1 (top)
-    const scale = 1.25 - 0.4 * t; // 1.25 (bottom), 0.85 (top)
-    const opacity = 0.22 - 0.10 * t; // 0.22 (bottom), 0.12 (top)
+    const t = mascotY.value / -18;
+    const scale = 1.25 - 0.4 * t;
     return {
       transform: [{ scaleX: scale }, { scaleY: scale * 0.5 }],
-      opacity,
+      opacity: 0.22 - 0.10 * t,
     };
   });
 
-  // Form state
+  // 4. Button Scale (Reanimated)
+  const loginScale = useSharedValue(1);
+  const btnAnimStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: loginScale.value }],
+  }));
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [focused, setFocused] = useState('');
   const [loading, setLoading] = useState(false);
-
-  // Button press animation
-  const [loginScale] = useState(new Animated.Value(1));
-  const animateLoginPress = (to: any) => {
-    Animated.spring(loginScale, {
-      toValue: to,
-      useNativeDriver: true,
-      speed: 18,
-      bounciness: 6,
-    }).start();
-  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#0a1a3c' }}>
@@ -68,45 +69,39 @@ export default function LoginScreen() {
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
-        {/* Background gradient */}
         <LinearGradient
           colors={["#0a1a3c", "#1746a0", "#3b82f6"]}
-          start={{ x: 0, y: 1 }}
-          end={{ x: 1, y: 0 }}
           style={StyleSheet.absoluteFill}
         />
-        {/* Radial glow overlay */}
-        <View pointerEvents="none" style={styles.radialGlow} />
-        <Animated.View style={{ flex: 1, opacity: fadeAnim, justifyContent: 'center' }}>
-          {/* Mascot + shadow */}
+        
+        {/* Wrap content in Reanimated View for the fade-in */}
+        <Animated.View style={[{ flex: 1, justifyContent: 'center' }, fadeStyle]}>
+          
           <View style={styles.mascotContainer}>
             <Animated.View style={[styles.mascotShadow, mascotShadowAnimStyle]} />
             <Animated.View style={[styles.mascot, mascotAnimStyle]}>
               <Image source={mascot} style={{ width: 92, height: 92 }} resizeMode="contain" />
             </Animated.View>
           </View>
-          {/* Glassy card */}
+
           <View style={styles.cardWrap}>
             <BlurView intensity={40} tint="light" style={styles.cardBlur}>
               <View style={styles.cardContent}>
                 <Text style={styles.title}>Welcome Back</Text>
                 <Text style={styles.subtitle}>Sign in to continue</Text>
-                <View style={{ height: 18 }} />
-                {/* Email */}
+
                 <View style={[styles.inputWrap, focused === 'email' && styles.inputFocused]}>
                   <TextInput
                     style={styles.input}
                     placeholder="Email"
                     placeholderTextColor="#e0e6f7"
-                    keyboardType="email-address"
-                    autoCapitalize="none"
                     value={email}
                     onChangeText={setEmail}
                     onFocus={() => setFocused('email')}
                     onBlur={() => setFocused('')}
                   />
                 </View>
-                {/* Password */}
+
                 <View style={[styles.inputWrap, focused === 'password' && styles.inputFocused]}>
                   <TextInput
                     style={styles.input}
@@ -119,35 +114,38 @@ export default function LoginScreen() {
                     onBlur={() => setFocused('')}
                   />
                 </View>
-                <View style={styles.forgotRow}>
-                  <Pressable>
-                    <Text style={styles.forgotText}>Forgot Password?</Text>
-                  </Pressable>
-                </View>
-                {/* Login Button */}
-                <Animated.View style={{ transform: [{ scale: loginScale }] }}>
+
+                {/* Login Button with Reanimated Scale */}
+                <Animated.View style={btnAnimStyle}>
                   <Pressable
-                    style={({ pressed }) => [styles.loginBtn, pressed && styles.loginBtnPressed]}
-                    onPressIn={() => animateLoginPress(0.96)}
-                    onPressOut={() => animateLoginPress(1)}
+                    style={styles.loginBtn}
+                    onPressIn={() => { loginScale.value = withSpring(0.96); }}
+                    onPressOut={() => { loginScale.value = withSpring(1); }}
                     onPress={async () => {
                       setLoading(true);
-
-                      setTimeout(async () => {
-                        await login(); // ✅ save login state
-                        setLoading(false);
-                        router.replace('/(tabs)' as any);
-                      }, 1200);
+                      await login();
+                      setLoading(false);
+                      router.replace('/(tabs)');
                     }}
                     disabled={loading}
                   >
                     <Text style={styles.loginBtnText}>{loading ? 'Loading...' : 'Login'}</Text>
                   </Pressable>
+                  <Pressable
+                    style={styles.loginBtn} // change here !!!!!!!!!!!!
+                    onPressIn={() => { loginScale.value = withSpring(0.96); }}
+                    onPressOut={() => { loginScale.value = withSpring(1); }}
+                    onPress={async () => {
+                      setLoading(true);
+                      await login();
+                      setLoading(false);
+                      router.replace('/signup');
+                    }}
+                    disabled={loading}
+                  >
+                    <Text style={styles.loginBtnText}>{loading ? 'Loading...' : 'Create Account'}</Text>
+                  </Pressable>
                 </Animated.View>
-                {/* Create Account */}
-                <Pressable style={styles.createBtn}>
-                  <Text style={styles.createBtnText}>Create Account</Text>
-                </Pressable>
               </View>
             </BlurView>
           </View>
