@@ -252,7 +252,7 @@ export default function HomeScreen() {
   const [activeSlide, setActiveSlide] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState("All");
 
-  
+
 
   const SCREEN_HEIGHT = height;
   const tabBarHeight = useBottomTabBarHeight();
@@ -274,21 +274,21 @@ export default function HomeScreen() {
   // }, [activeSlide]);
 
   useEffect(() => {
-  progressAnim.value = 0;
-  progressAnim.value = withTiming(1, { 
-    duration: 5000, 
-    easing: Easing.linear 
-  }, (finished) => {
-    if (finished) {
-      // Use runOnJS to update state from the animation thread
-      runOnJS(setActiveSlide)((activeSlide + 1) % slides.length);
-    }
-  });
-}, [activeSlide]);
+    progressAnim.value = 0;
+    progressAnim.value = withTiming(1, {
+      duration: 5000,
+      easing: Easing.linear
+    }, (finished) => {
+      if (finished) {
+        // Use runOnJS to update state from the animation thread
+        runOnJS(setActiveSlide)((activeSlide + 1) % slides.length);
+      }
+    });
+  }, [activeSlide]);
 
-const progressFillStyle = useAnimatedStyle(() => ({
-  width: progressAnim.value * 32, 
-}));
+  const progressFillStyle = useAnimatedStyle(() => ({
+    width: progressAnim.value * 32,
+  }));
 
   const slide = slides[activeSlide];
 
@@ -405,20 +405,20 @@ const progressFillStyle = useAnimatedStyle(() => ({
   // });
 
   // Change this style block
-const mascotAnimStyle = useAnimatedStyle(() => {
-  // Use a derived value approach for the rotation to keep it clean
-  const rotationValue = mascotTranslateY.value < 0
-    ? -6 * (mascotTranslateY.value / -18)
-    : 6 * (mascotTranslateY.value / 18);
+  const mascotAnimStyle = useAnimatedStyle(() => {
+    // Use a derived value approach for the rotation to keep it clean
+    const rotationValue = mascotTranslateY.value < 0
+      ? -6 * (mascotTranslateY.value / -18)
+      : 6 * (mascotTranslateY.value / 18);
 
-  return {
-    transform: [
-      { translateY: mascotTranslateY.value },
-      // Ensure the string is treated as a fresh value
-      { rotate: `${rotationValue}deg` as any }, 
-    ],
-  };
-});
+    return {
+      transform: [
+        { translateY: mascotTranslateY.value },
+        // Ensure the string is treated as a fresh value
+        { rotate: `${rotationValue}deg` as any },
+      ],
+    };
+  });
 
   return (
     <View style={{ flex: 1 }}>
@@ -434,10 +434,11 @@ const mascotAnimStyle = useAnimatedStyle(() => {
           style={[
             styles.heroSection,
             {
-              height: SCREEN_HEIGHT - tabBarHeight,
+              // height: SCREEN_HEIGHT - tabBarHeight,
+              height: SCREEN_HEIGHT * 0.5
             },
           ]}
-        >
+          >
           {/* Animated Gradient Overlay */}
           <AnimatedGradientBackground
             currentIndex={activeSlide}
@@ -462,7 +463,7 @@ const mascotAnimStyle = useAnimatedStyle(() => {
                 style={styles.textLogo}
                 resizeMode="contain" // Ensures text doesn't stretch weirdly
               />
-              <LogoutButton />
+              {/* <LogoutButton /> */}
             </View>
 
             <Pressable onPress={() => setDrawerVisible(true)}>
@@ -472,19 +473,19 @@ const mascotAnimStyle = useAnimatedStyle(() => {
 
           {/* CONTENT */}
           <View style={styles.content}>
-            <View style={{ marginTop: -120 }}>
+            {/* <View style={{ marginTop: -120 }}>
               <AnimatedReanimated.View style={mascotAnimStyle}>
                 <Image
                   source={require("../../assets/mascot-sitting.avif")}
                   style={styles.mascotImage}
                 />
               </AnimatedReanimated.View>
-            </View>
+            </View> */}
 
-            <BlurView intensity={32} tint="light" style={styles.badge}>
+            {/* <BlurView intensity={32} tint="light" style={styles.badge}>
               <View style={styles.badgeDot} />
               <Text style={styles.badgeText}>Since 2012 — Now in Sri Lanka</Text>
-            </BlurView>
+            </BlurView> */}
 
             {/* Animated Slide Component */}
             <SlideComponent key={activeSlide} slide={slides[activeSlide]} />
@@ -493,28 +494,28 @@ const mascotAnimStyle = useAnimatedStyle(() => {
           {/* BOTTOM */}
           <View style={styles.bottomRow}>
             <View style={{ flexDirection: "row", gap: 6 }}>
-  {slides.map((_, i) =>
-    i === activeSlide ? (
-      <View key={i} style={styles.progressBar}>
-        {/* Use AnimatedReanimated here, NOT the standard Animated */}
-        <AnimatedReanimated.View
-          style={[
-            styles.progressFill,
-            progressFillStyle, // Use the style we created in Step 3
-          ]}
-        />
-      </View>
-    ) : (
-      <View key={i} style={styles.progressDot} />
-    )
-  )}
-</View>
+              {slides.map((_, i) =>
+                i === activeSlide ? (
+                  <View key={i} style={styles.progressBar}>
+                    {/* Use AnimatedReanimated here, NOT the standard Animated */}
+                    <AnimatedReanimated.View
+                      style={[
+                        styles.progressFill,
+                        progressFillStyle, // Use the style we created in Step 3
+                      ]}
+                    />
+                  </View>
+                ) : (
+                  <View key={i} style={styles.progressDot} />
+                )
+              )}
+            </View>
           </View>
         </LinearGradient>
 
         {/*SECTION 2 - PRODUCTS */}
         <View style={styles.productsSection}>
-          <Text style={styles.superTitle}>OUR MENU</Text>
+          {/* <Text style={styles.superTitle}>OUR MENU</Text> */}
           <Text style={styles.sectionTitle}>Explore Our Products</Text>
 
           <View style={styles.divider} />
@@ -833,6 +834,7 @@ const styles = StyleSheet.create({
     position: "relative",
     overflow: "hidden",
   },
+  
   heroContent: {
     position: "relative",
     zIndex: 1,
@@ -840,6 +842,7 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "space-between",
   },
+  
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -1031,7 +1034,7 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins-SemiBold",
     fontSize: 24,
     fontWeight: "800",
-    marginBottom: 10,
+    marginBottom: 6,
     textAlign: "center",
   },
 
@@ -1043,7 +1046,7 @@ const styles = StyleSheet.create({
     lineHeight: 18,
     maxWidth: '90%', // Prevents text from hitting the screen edges
     alignSelf: "center",
-    marginBottom: 20,
+    marginBottom: 2,
   },
 
   divider: {

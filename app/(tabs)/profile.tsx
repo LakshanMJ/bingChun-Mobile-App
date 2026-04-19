@@ -1,108 +1,434 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image, Pressable, ScrollView, Switch } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { BlurView } from 'expo-blur';
-import { LinearGradient } from 'expo-linear-gradient';
-import Animated, { FadeInDown } from 'react-native-reanimated';
-import { useRouter } from 'expo-router';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Ionicons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { LinearGradient } from "expo-linear-gradient";
+import { useRouter } from "expo-router";
+import React, { useState } from "react";
+import {
+  Dimensions,
+  Image,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Switch,
+  Text,
+  View,
+} from "react-native";
+import Animated, { FadeInDown, FadeInUp } from "react-native-reanimated";
+
+const { width } = Dimensions.get("window");
 
 export default function ProfileScreen() {
   const router = useRouter();
-  const [isDarkMode, setIsDarkMode] = React.useState(true);
+  const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+  const [darkMode, setDarkMode] = useState(false);
 
   const handleLogout = async () => {
     await AsyncStorage.removeItem("isLoggedIn");
-    router.replace('/login');
+    router.replace("/login");
   };
 
   return (
     <View style={styles.container}>
-      <LinearGradient colors={['#0a1a3c', '#11224d']} style={StyleSheet.absoluteFill} />
-      
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
-        {/* Header Section */}
-        <View style={styles.header}>
-          <Image 
-            source={{ uri: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6' }} 
-            style={styles.avatar} 
-          />
-          <Text style={styles.userName}>Dev User</Text>
-          <Text style={styles.userTag}>Full-Stack Developer | Fitness</Text>
-          
-          <View style={styles.statsRow}>
-            <StatItem label="Projects" value="12" />
-            <StatItem label="Streak" value="15d" />
-            <StatItem label="Level" value="Pro" />
-          </View>
-        </View>
+      {/* Full-screen blue gradient — same as home hero */}
+      <LinearGradient
+        colors={["#1E4ED8", "#2563EB", "#3B82F6"]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={StyleSheet.absoluteFill}
+      />
 
-        {/* Settings Groups */}
-        <Animated.View entering={FadeInDown.delay(200)} style={styles.section}>
-          <Text style={styles.sectionTitle}>Account Settings</Text>
-          <BlurView intensity={20} tint="light" style={styles.menuCard}>
-            <MenuItem icon="person-outline" label="Edit Profile" />
-            <MenuItem icon="shield-checkmark-outline" label="Security" />
-            <View style={styles.menuItem}>
-              <View style={styles.menuLeft}>
-                <Ionicons name="moon-outline" size={22} color="#fff" />
-                <Text style={styles.menuLabel}>Dark Mode</Text>
-              </View>
-              <Switch 
-                value={isDarkMode} 
-                onValueChange={setIsDarkMode}
-                trackColor={{ false: '#3e3e3e', true: '#3b82f6' }}
+      {/* Decorative blobs — same subtle feel as hero section */}
+      <View style={styles.blobTopRight} />
+      <View style={styles.blobTopLeft} />
+
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 40 }}
+      >
+        {/* ── HEADER ── */}
+        <Animated.View
+          entering={FadeInUp.duration(500)}
+          style={styles.headerSection}
+        >
+          {/* Avatar */}
+          <View style={styles.avatarWrapper}>
+            <Image
+              source={{
+                uri: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=200&h=200&fit=crop&crop=face",
+              }}
+              style={styles.avatar}
+            />
+            <View style={styles.onlineDot} />
+          </View>
+
+          <Text style={styles.userName}>Lakshan Jay</Text>
+          <Text style={styles.userSub}>Member since 2023</Text>
+
+          {/* Stats pill — mimics hero BlurView badge */}
+          <View style={styles.statsPill}>
+            <StatItem label="Orders" value="12" accent={false} />
+            <View style={styles.statDivider} />
+            <StatItem label="Streak" value="15d" accent />
+            <View style={styles.statDivider} />
+            <StatItem label="Level" value="Pro" accent={false} />
+          </View>
+        </Animated.View>
+
+        {/* ── WHITE SHEET — same rise as products section ── */}
+        <View style={styles.sheet}>
+
+          {/* ACCOUNT */}
+          <Animated.View entering={FadeInDown.delay(100).duration(400)}>
+            <Text style={styles.groupLabel}>Account</Text>
+            <View style={styles.menuCard}>
+              <MenuRow
+                iconName="person-outline"
+                iconBg="#EFF6FF"
+                iconColor="#3B82F6"
+                label="Edit Profile"
+                showChevron
+              />
+              <MenuRow
+                iconName="shield-checkmark-outline"
+                iconBg="#EFF6FF"
+                iconColor="#3B82F6"
+                label="Security"
+                showChevron
+              />
+              <MenuRow
+                iconName="notifications-outline"
+                iconBg="#EFF6FF"
+                iconColor="#3B82F6"
+                label="Notifications"
+                isLast
+                right={
+                  <Switch
+                    value={notificationsEnabled}
+                    onValueChange={setNotificationsEnabled}
+                    trackColor={{ false: "#E2E8F0", true: "#3B82F6" }}
+                    thumbColor="#fff"
+                  />
+                }
               />
             </View>
-          </BlurView>
-        </Animated.View>
+          </Animated.View>
 
-        {/* Logout Section */}
-        <Animated.View entering={FadeInDown.delay(400)} style={styles.section}>
-          <Pressable style={styles.logoutBtn} onPress={handleLogout}>
-            <Ionicons name="log-out-outline" size={20} color="#ff4d4d" />
-            <Text style={styles.logoutText}>Sign Out</Text>
-          </Pressable>
-        </Animated.View>
+          {/* PREFERENCES */}
+          <Animated.View entering={FadeInDown.delay(200).duration(400)}>
+            <Text style={styles.groupLabel}>Preferences</Text>
+            <View style={styles.menuCard}>
+              <MenuRow
+                iconName="time-outline"
+                iconBg="#F0FDF4"
+                iconColor="#22C55E"
+                label="Order History"
+                showChevron
+              />
+              <MenuRow
+                iconName="star-outline"
+                iconBg="#FFF7ED"
+                iconColor="#F97316"
+                label="Favourites"
+                right={<Badge value="3" />}
+              />
+              <MenuRow
+                iconName="moon-outline"
+                iconBg="#EFF6FF"
+                iconColor="#3B82F6"
+                label="Dark Mode"
+                isLast
+                right={
+                  <Switch
+                    value={darkMode}
+                    onValueChange={setDarkMode}
+                    trackColor={{ false: "#E2E8F0", true: "#3B82F6" }}
+                    thumbColor="#fff"
+                  />
+                }
+              />
+            </View>
+          </Animated.View>
+
+          {/* SIGN OUT */}
+          <Animated.View entering={FadeInDown.delay(300).duration(400)}>
+            <Pressable
+              style={({ pressed }) => [
+                styles.logoutBtn,
+                pressed && { opacity: 0.7 },
+              ]}
+              onPress={handleLogout}
+            >
+              <Ionicons name="log-out-outline" size={20} color="#EF4444" />
+              <Text style={styles.logoutText}>Sign Out</Text>
+            </Pressable>
+          </Animated.View>
+
+        </View>
       </ScrollView>
     </View>
   );
 }
 
-// Sub-components for cleaner code
-const StatItem = ({ label, value }: { label: string; value: string }) => (
+// ── Sub-components ──────────────────────────────────────────
+
+const StatItem = ({
+  label,
+  value,
+  accent,
+}: {
+  label: string;
+  value: string;
+  accent: boolean;
+}) => (
   <View style={styles.statBox}>
-    <Text style={styles.statValue}>{value}</Text>
+    <Text style={[styles.statValue, accent && { color: "#FCD34D" }]}>
+      {value}
+    </Text>
     <Text style={styles.statLabel}>{label}</Text>
   </View>
 );
 
-const MenuItem = ({ icon, label }: { icon: any; label: string }) => (
-  <Pressable style={styles.menuItem}>
-    <View style={styles.menuLeft}>
-      <Ionicons name={icon} size={22} color="#fff" />
+const MenuRow = ({
+  iconName,
+  iconBg,
+  iconColor,
+  label,
+  showChevron,
+  isLast,
+  right,
+}: {
+  iconName: any;
+  iconBg: string;
+  iconColor: string;
+  label: string;
+  showChevron?: boolean;
+  isLast?: boolean;
+  right?: React.ReactNode;
+}) => (
+  <Pressable
+    style={({ pressed }) => [
+      styles.menuRow,
+      !isLast && styles.menuRowBorder,
+      pressed && { backgroundColor: "#F8FAFC" },
+    ]}
+  >
+    <View style={styles.menuRowLeft}>
+      <View style={[styles.menuIconBox, { backgroundColor: iconBg }]}>
+        <Ionicons name={iconName} size={18} color={iconColor} />
+      </View>
       <Text style={styles.menuLabel}>{label}</Text>
     </View>
-    <Ionicons name="chevron-forward" size={18} color="#94a3b8" />
+    {right ?? (showChevron && (
+      <Ionicons name="chevron-forward" size={16} color="#CBD5E1" />
+    ))}
   </Pressable>
 );
 
+const Badge = ({ value }: { value: string }) => (
+  <View style={styles.badge}>
+    <Text style={styles.badgeText}>{value}</Text>
+  </View>
+);
+
+// ── Styles ──────────────────────────────────────────────────
+
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#0a1a3c' },
-  header: { alignItems: 'center', paddingTop: 60, paddingBottom: 30 },
-  avatar: { width: 100, height: 100, borderRadius: 50, borderWidth: 3, borderColor: '#3b82f6' },
-  userName: { color: '#fff', fontSize: 24, fontWeight: '800', marginTop: 15 },
-  userTag: { color: '#94a3b8', fontSize: 14, marginTop: 4 },
-  statsRow: { flexDirection: 'row', marginTop: 25, width: '100%', justifyContent: 'space-evenly' },
-  statBox: { alignItems: 'center' },
-  statValue: { color: '#fff', fontSize: 20, fontWeight: '700' },
-  statLabel: { color: '#94a3b8', fontSize: 12, marginTop: 2 },
-  section: { paddingHorizontal: 20, marginTop: 30 },
-  sectionTitle: { color: '#94a3b8', fontSize: 13, fontWeight: '600', textTransform: 'uppercase', marginBottom: 12, marginLeft: 5 },
-  menuCard: { borderRadius: 20, overflow: 'hidden', backgroundColor: 'rgba(255,255,255,0.05)' },
-  menuItem: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: 16, borderBottomWidth: 0.5, borderBottomColor: 'rgba(255,255,255,0.1)' },
-  menuLeft: { flexDirection: 'row', alignItems: 'center' },
-  menuLabel: { color: '#fff', fontSize: 16, marginLeft: 12, fontWeight: '500' },
-  logoutBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255,77,77,0.1)', padding: 16, borderRadius: 16, borderWidth: 1, borderColor: 'rgba(255,77,77,0.2)' },
-  logoutText: { color: '#ff4d4d', fontSize: 16, fontWeight: '700', marginLeft: 8 },
+  container: {
+    flex: 1,
+    backgroundColor: "#1E4ED8",
+  },
+
+  // Decorative blobs
+  blobTopRight: {
+    position: "absolute",
+    top: -60,
+    right: -60,
+    width: 220,
+    height: 220,
+    borderRadius: 110,
+    backgroundColor: "rgba(255,255,255,0.04)",
+  },
+  blobTopLeft: {
+    position: "absolute",
+    top: 80,
+    left: -80,
+    width: 280,
+    height: 280,
+    borderRadius: 140,
+    backgroundColor: "rgba(255,255,255,0.03)",
+  },
+
+  // Header
+  headerSection: {
+    alignItems: "center",
+    paddingTop: 60,
+    paddingBottom: 28,
+    paddingHorizontal: 24,
+  },
+  avatarWrapper: {
+    position: "relative",
+    marginBottom: 16,
+  },
+  avatar: {
+    width: 88,
+    height: 88,
+    borderRadius: 44,
+    borderWidth: 3,
+    borderColor: "rgba(255,255,255,0.9)",
+  },
+  onlineDot: {
+    position: "absolute",
+    bottom: 3,
+    right: 3,
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+    backgroundColor: "#22C55E",
+    borderWidth: 2.5,
+    borderColor: "#2563EB",
+  },
+  userName: {
+    color: "#fff",
+    fontSize: 22,
+    fontWeight: "800",
+    fontFamily: "Poppins-ExtraBold",
+    letterSpacing: -0.3,
+    marginBottom: 4,
+  },
+  userSub: {
+    color: "rgba(255,255,255,0.6)",
+    fontSize: 13,
+    fontFamily: "Poppins-Regular",
+    marginBottom: 24,
+  },
+
+  // Stats pill — matches BlurView badge in home
+  statsPill: {
+    flexDirection: "row",
+    borderRadius: 18,
+    overflow: "hidden",
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.12)",
+    backgroundColor: "rgba(255,255,255,0.08)",
+    width: width - 48,
+  },
+  statBox: {
+    flex: 1,
+    alignItems: "center",
+    paddingVertical: 14,
+  },
+  statDivider: {
+    width: 0.5,
+    backgroundColor: "rgba(255,255,255,0.12)",
+  },
+  statValue: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "800",
+    fontFamily: "Poppins-ExtraBold",
+  },
+  statLabel: {
+    color: "rgba(255,255,255,0.55)",
+    fontSize: 11,
+    fontFamily: "Poppins-Regular",
+    textTransform: "uppercase",
+    letterSpacing: 0.5,
+    marginTop: 2,
+  },
+
+  // White sheet — same rise as products section
+  sheet: {
+    backgroundColor: "#F8FAFC",
+    borderTopLeftRadius: 28,
+    borderTopRightRadius: 28,
+    paddingHorizontal: 20,
+    paddingTop: 28,
+    paddingBottom: 40,
+    minHeight: 500,
+  },
+
+  groupLabel: {
+    fontSize: 11,
+    fontWeight: "700",
+    fontFamily: "Poppins-SemiBold",
+    color: "#94A3B8",
+    letterSpacing: 1.5,
+    textTransform: "uppercase",
+    marginBottom: 10,
+    marginLeft: 4,
+    marginTop: 8,
+  },
+
+  menuCard: {
+    backgroundColor: "#fff",
+    borderRadius: 20,
+    overflow: "hidden",
+    marginBottom: 16,
+    // Shadow
+    shadowColor: "#0F172A",
+    shadowOpacity: 0.06,
+    shadowRadius: 20,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 6,
+  },
+  menuRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 18,
+    paddingVertical: 14,
+  },
+  menuRowBorder: {
+    borderBottomWidth: 0.5,
+    borderBottomColor: "#F1F5F9",
+  },
+  menuRowLeft: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 14,
+  },
+  menuIconBox: {
+    width: 38,
+    height: 38,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  menuLabel: {
+    fontSize: 15,
+    fontWeight: "600",
+    fontFamily: "Poppins-SemiBold",
+    color: "#111827",
+  },
+
+  badge: {
+    backgroundColor: "#3B82F6",
+    borderRadius: 999,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+  },
+  badgeText: {
+    color: "#fff",
+    fontSize: 11,
+    fontWeight: "700",
+  },
+
+  logoutBtn: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+    backgroundColor: "rgba(239,68,68,0.06)",
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: "rgba(239,68,68,0.15)",
+    paddingVertical: 16,
+    marginTop: 8,
+  },
+  logoutText: {
+    color: "#EF4444",
+    fontSize: 15,
+    fontWeight: "700",
+    fontFamily: "Poppins-SemiBold",
+  },
 });
