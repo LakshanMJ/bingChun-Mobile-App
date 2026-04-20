@@ -426,6 +426,7 @@ const PastOrderCard = ({ order }: { order: Order }) => {
           <View style={styles.pastItemsRow}>
             {preview.map((item, i) => (
               <Image
+                key={`${item.name}-${i}`}
                 source={item.imageUrl}
                 style={styles.productImage}
                 resizeMode="contain"

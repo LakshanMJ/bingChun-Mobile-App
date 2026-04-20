@@ -66,11 +66,11 @@ export default function ProfileScreen() {
 
           {/* Stats pill — mimics hero BlurView badge */}
           <View style={styles.statsPill}>
-            <StatItem label="Orders" value="12" accent={false} />
+            <StatItem label="Cool Points" value="1200" accent={false} />
             <View style={styles.statDivider} />
-            <StatItem label="Streak" value="15d" accent />
+            <StatItem label="Membership" value="Gold" accent />
             <View style={styles.statDivider} />
-            <StatItem label="Level" value="Pro" accent={false} />
+            <StatItem label="Flavors Tried" value="14/30" accent={false} />
           </View>
         </Animated.View>
 
@@ -118,22 +118,22 @@ export default function ProfileScreen() {
             <Text style={styles.groupLabel}>Preferences</Text>
             <View style={styles.menuCard}>
               <MenuRow
-                iconName="time-outline"
-                iconBg="#F0FDF4"
-                iconColor="#22C55E"
-                label="Order History"
+                iconName="wallet-outline"
+                iconBg="#F0F9FF"
+                iconColor="#3B82F6"
+                label="Payment"
                 showChevron
               />
               <MenuRow
-                iconName="star-outline"
-                iconBg="#FFF7ED"
-                iconColor="#F97316"
-                label="Favourites"
-                right={<Badge value="3" />}
+                iconName="chatbubble-ellipses-outline" // Gives a "we are here to talk" vibe
+                iconBg="#F0F9FF"   // Very light blue/sky tint
+                iconColor="#3B82F6" // Calm, trustworthy blue
+                label="Help & Support"
+                showChevron
               />
               <MenuRow
                 iconName="moon-outline"
-                iconBg="#EFF6FF"
+                iconBg="#F0F9FF"
                 iconColor="#3B82F6"
                 label="Dark Mode"
                 isLast
@@ -424,6 +424,7 @@ const styles = StyleSheet.create({
     borderColor: "rgba(239,68,68,0.15)",
     paddingVertical: 16,
     marginTop: 8,
+    marginBottom: 30,
   },
   logoutText: {
     color: "#EF4444",

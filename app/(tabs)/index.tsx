@@ -1,4 +1,3 @@
-import LogoutButton from "@/components/logoutButton";
 import { Ionicons } from "@expo/vector-icons";
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { BlurView } from "expo-blur";
@@ -1136,6 +1135,7 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     justifyContent: "space-between",
     marginTop: 16,
+    marginBottom: 74,
   },
 
   badgesRow: {
