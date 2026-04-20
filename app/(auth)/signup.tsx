@@ -16,6 +16,8 @@ const flavorImages = {
   boboMilkTea: require('../../assets/product_images/Bobo-Milk-Tea-500u.avif'),
   chocolateIceCream: require('../../assets/product_images/Chocolate-Ice-Cream.avif'),
   grapeBobTea: require('../../assets/product_images/Grape-Bobo-Tea-700ml.avif'),
+  BlueberrySundae: require('../../assets/product_images/Blueberry-Sundae-360.avif'),
+  
 };
 
 const FLAVOR_OPTIONS = [
@@ -24,6 +26,7 @@ const FLAVOR_OPTIONS = [
   { id: 'boboMilkTea', name: 'Bobo Milk Tea', image: flavorImages.boboMilkTea },
   { id: 'chocolateIceCream', name: 'Chocolate Ice Cream', image: flavorImages.chocolateIceCream },
   { id: 'grapeBobTea', name: 'Grape Bobo Tea', image: flavorImages.grapeBobTea },
+  { id: 'BlueberrySundae', name: 'Blueberry Sundae', image: flavorImages.BlueberrySundae },
 ];
 
 export default function SignUpScreen() {
@@ -96,7 +99,7 @@ export default function SignUpScreen() {
             <View style={styles.header}>
               <Image source={mascot} style={styles.miniMascot} resizeMode="contain" />
               <Text style={styles.title}>Create Account</Text>
-              <Text style={styles.subtitle}>Join the community today</Text>
+              <Text style={styles.subtitle}>Join the sweet escape !</Text>
             </View>
 
             <BlurView intensity={40} tint="light" style={styles.card}>
@@ -105,7 +108,7 @@ export default function SignUpScreen() {
                 <View style={[styles.inputWrap, focused === 'name' && styles.inputFocused]}>
                   <TextInput
                     style={styles.input}
-                    placeholder="Full Name"
+                    placeholder="Name"
                     placeholderTextColor="#e0e6f7"
                     onFocus={() => setFocused('name')}
                     onBlur={() => setFocused('')}
@@ -158,7 +161,7 @@ export default function SignUpScreen() {
                   style={[styles.inputWrap, styles.datePickerTrigger]}
                   onPress={() => setShowDatePicker(true)}
                 >
-                  <Text style={[styles.input, { paddingVertical: 16 }]}>
+                  <Text style={[styles.dateInput, { paddingVertical: 16 }]}>
                     {form.dateOfBirthString || 'Select Date of Birth'}
                   </Text>
                 </Pressable>
@@ -235,8 +238,8 @@ export default function SignUpScreen() {
 const styles = StyleSheet.create({
   header: { alignItems: 'center', marginBottom: 20 },
   miniMascot: { width: 70, height: 70, marginBottom: 10 },
-  title: { color: '#fff', fontSize: 28, fontWeight: '800' },
-  subtitle: { color: '#e0e6f7', fontSize: 16, marginTop: 4 },
+  title: { color: '#fff', fontSize: 28, fontWeight: '800',fontFamily: "Poppins-ExtraBold" },
+  subtitle: { color: '#e0e6f7', fontSize: 16, marginTop: 4, fontFamily: "Poppins-Regular"},
   card: { borderRadius: 28, overflow: 'hidden', padding: 25 },
   inputGroup: { width: '100%' },
   inputWrap: {
@@ -247,7 +250,8 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   inputFocused: { borderColor: '#3b82f6' },
-  input: { color: '#fff', padding: 16, fontSize: 16 },
+  input: { color: '#fff', padding: 16, fontSize: 16, fontFamily: "Poppins-Regular"},
+  dateInput: { color: '#e0e6f7', paddingHorizontal: 16, fontSize: 16, fontFamily: "Poppins-Regular" },
   datePickerTrigger: {
     justifyContent: 'center',
     paddingHorizontal: 0,
@@ -257,12 +261,14 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   flavorTitle: {
+    fontFamily: "Poppins-SemiBold",
     color: '#fff',
     fontSize: 18,
     fontWeight: '700',
     marginBottom: 4,
   },
   flavorSubtitle: {
+    fontFamily: "Poppins-Regular",
     color: '#e0e6f7',
     fontSize: 13,
     marginBottom: 15,
@@ -292,6 +298,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   flavorName: {
+    fontFamily: "Poppins-Regular",
     color: '#fff',
     fontSize: 12,
     fontWeight: '600',
@@ -321,7 +328,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   btnPressed: { opacity: 0.8 },
-  btnText: { color: '#fff', fontSize: 18, fontWeight: '700' },
-  footerText: { color: '#e0e6f7', fontSize: 14 },
-  linkText: { color: '#fff', fontWeight: '800' }
+  btnText: { color: '#fff', fontSize: 18, fontWeight: '700', fontFamily: "Poppins-SemiBold" },
+  footerText: { color: '#e0e6f7', fontSize: 14, fontFamily: "Poppins-Regular" },
+  linkText: { color: '#fff', fontWeight: '800', fontFamily: "Poppins-SemiBold" },
 });

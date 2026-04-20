@@ -46,14 +46,14 @@ const ACTIVE_ORDERS: Order[] = [
         qty: 1,
         price: 450,
         // Use a real HTTPS URL here
-        imageUrl: require("../../assets/product_images/Blueberry-Bobo-Tea-500u.avif")
+        imageUrl: require("../../assets/product_images/Blueberry-Bobo-Tea-500u.webp")
       },
       {
         name: "Blueberry Sundae",
         variant: "Regular · Extra toppings",
         qty: 2,
         price: 450,
-        imageUrl: require("../../assets/product_images/Blueberry-Sundae-360.avif")
+        imageUrl: require("../../assets/product_images/Blueberry-Sundae-360.webp")
       },
     ],
   },
@@ -65,9 +65,9 @@ const PAST_ORDERS: Order[] = [
     date: "Yesterday, 5:10 PM",
     status: "delivered",
     items: [
-      { name: "Chocolate Oreo Milkshake", variant: "Large", qty: 1, price: 450, imageUrl: require("../../assets/product_images/Chocolate-Oreo-Milkshake.avif") },
-      { name: "Brown Sugar Boba Milk Tea", variant: "500ml · Normal sugar", qty: 1, price: 450, imageUrl: require("../../assets/product_images/Brown-Black-Sugar-Boba-Milk-Tea-500u.avif") },
-      { name: "Blueberry Sundae", variant: "Regular", qty: 1, price: 450, imageUrl: require("../../assets/product_images/Blueberry-Sundae-360.avif") },
+      { name: "Chocolate Oreo Milkshake", variant: "Large", qty: 1, price: 450, imageUrl: require("../../assets/product_images/Chocolate-Oreo-Milkshake.webp") },
+      { name: "Brown Sugar Boba Milk Tea", variant: "500ml · Normal sugar", qty: 1, price: 450, imageUrl: require("../../assets/product_images/Brown-Black-Sugar-Boba-Milk-Tea-500u.webp") },
+      { name: "Blueberry Sundae", variant: "Regular", qty: 1, price: 450, imageUrl: require("../../assets/product_images/Blueberry-Sundae-360.webp") },
     ],
   },
   {
@@ -75,7 +75,7 @@ const PAST_ORDERS: Order[] = [
     date: "Apr 15, 12:44 PM",
     status: "delivered",
     items: [
-      { name: "Grape Bobo Tea", variant: "700ml · Less sugar", qty: 2, price: 350, imageUrl: require("../../assets/product_images/Grape-Bobo-Tea-700ml.avif") },
+      { name: "Grape Bobo Tea", variant: "700ml · Less sugar", qty: 2, price: 350, imageUrl: require("../../assets/product_images/Grape-Bobo-Tea-700ml.webp") },
     ],
   },
   {
@@ -83,9 +83,9 @@ const PAST_ORDERS: Order[] = [
     date: "Apr 12, 3:20 PM",
     status: "delivered",
     items: [
-      { name: "Mango Pomelo Sago", variant: "Regular", qty: 2, price: 550, imageUrl: require("../../assets/product_images/Mango-Pomelo-Sago.avif") },
-      { name: "Lemon Black Tea", variant: "700ml", qty: 1, price: 650, imageUrl: require("../../assets/product_images/Lemon-Black-Tea-700ml.avif") },
-      { name: "Original Milk Tea", variant: "500ml · Normal sugar", qty: 1, price: 650, imageUrl: require("../../assets/product_images/Bobo-Milk-Tea-500u.avif") },
+      { name: "Mango Pomelo Sago", variant: "Regular", qty: 2, price: 550, imageUrl: require("../../assets/product_images/Mango-Pomelo-Sago.webp") },
+      { name: "Lemon Black Tea", variant: "700ml", qty: 1, price: 650, imageUrl: require("../../assets/product_images/Lemon-Black-Tea-700ml.webp") },
+      { name: "Original Milk Tea", variant: "500ml · Normal sugar", qty: 1, price: 650, imageUrl: require("../../assets/product_images/Bobo-Milk-Tea-500u.webp") },
     ],
   },
   {
@@ -93,17 +93,17 @@ const PAST_ORDERS: Order[] = [
     date: "Apr 8, 6:55 PM",
     status: "delivered",
     items: [
-      { name: "Blueberry Milkshake", variant: "Large", qty: 1, price: 480, imageUrl: require("../../assets/product_images/Blueberry-Milkshake-500u.avif") },
-      { name: "Chocolate Ice Cream", variant: "Double scoop", qty: 1, price: 450, imageUrl: require("../../assets/product_images/Chocolate-Ice-Cream.avif") },
+      { name: "Blueberry Milkshake", variant: "Large", qty: 1, price: 480, imageUrl: require("../../assets/product_images/Blueberry-Milkshake-500u.webp") },
+      { name: "Chocolate Ice Cream", variant: "Double scoop", qty: 1, price: 450, imageUrl: require("../../assets/product_images/Chocolate-Ice-Cream.webp") },
     ],
   },
 ];
 
 const FAVOURITES = [
-  { name: "Blueberry Bobo Tea", variant: "700ml · Less sugar", price: "LKR 450", imageUrl: require("../../assets/product_images/Blueberry-Bobo-Tea-500u.avif"), orders: 6 },
-  { name: "Blueberry Sundae", variant: "Regular · Extra toppings", price: "LKR 450", imageUrl: require("../../assets/product_images/Blueberry-Sundae-360.avif"), orders: 4 },
-  { name: "Chocolate Oreo Milkshake", variant: "Large", price: "LKR 450", imageUrl: require("../../assets/product_images/Chocolate-Oreo-Milkshake.avif"), orders: 3 },
-  { name: "Mango Pomelo Sago", variant: "Regular", price: "LKR 550", imageUrl: require("../../assets/product_images/Mango-Pomelo-Sago.avif"), orders: 2 },
+  { name: "Blueberry Bobo Tea", variant: "700ml · Less sugar", price: "LKR 450", imageUrl: require("../../assets/product_images/Blueberry-Bobo-Tea-500u.webp"), orders: 6 },
+  { name: "Blueberry Sundae", variant: "Regular · Extra toppings", price: "LKR 450", imageUrl: require("../../assets/product_images/Blueberry-Sundae-360.webp"), orders: 4 },
+  { name: "Chocolate Oreo Milkshake", variant: "Large", price: "LKR 450", imageUrl: require("../../assets/product_images/Chocolate-Oreo-Milkshake.webp"), orders: 3 },
+  { name: "Mango Pomelo Sago", variant: "Regular", price: "LKR 550", imageUrl: require("../../assets/product_images/Mango-Pomelo-Sago.webp"), orders: 2 },
 ];
 
 const STEPS: { key: OrderStatus; label: string }[] = [
@@ -540,8 +540,8 @@ export default function OrdersScreen() {
 
 const styles = StyleSheet.create({
   productImage: {
-    width: 50,  // Or use a percentage like '100%' if the parent container has a size
-    height: 50,
+    width: 60,  // Or use a percentage like '100%' if the parent container has a size
+    height: 60,
     borderRadius: 8,
     backgroundColor: '#ccc', // Add a temporary bg color to see if the box even exists
   },

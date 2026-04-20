@@ -215,6 +215,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
+    fontFamily: "Poppins-ExtraBold",
     color: '#fff',
     fontSize: 26,
     fontWeight: '800',
@@ -222,6 +223,7 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   subtitle: {
+    fontFamily: "Poppins-Regular",
     color: '#e0e6f7',
     fontSize: 15,
     fontWeight: '500',
@@ -238,6 +240,7 @@ const styles = StyleSheet.create({
     transition: 'border-color 0.2s',
   },
   input: {
+    fontFamily: "Poppins-Regular",
     color: '#fff',
     fontSize: 16,
     paddingVertical: 12,
@@ -282,6 +285,7 @@ const styles = StyleSheet.create({
     transform: [{ scale: 0.96 }],
   },
   loginBtnText: {
+    fontFamily: "Poppins-SemiBold",
     color: '#fff',
     fontSize: 17,
     fontWeight: '700',

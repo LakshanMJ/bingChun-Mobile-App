@@ -53,10 +53,9 @@ export default function ProfileScreen() {
           {/* Avatar */}
           <View style={styles.avatarWrapper}>
             <Image
-              source={{
-                uri: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=200&h=200&fit=crop&crop=face",
-              }}
+              source={require('../../assets/mascot1.png')}
               style={styles.avatar}
+              resizeMode="contain"
             />
             <View style={styles.onlineDot} />
           </View>
