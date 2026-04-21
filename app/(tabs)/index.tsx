@@ -450,7 +450,7 @@ export default function HomeScreen() {
 
               <Image
                 source={require("../../assets/bing.png")}
-                style={styles.textLogo}
+                style={styles.textLogo1}
                 resizeMode="contain" // Ensures text doesn't stretch weirdly
               />
               <Image
@@ -459,7 +459,7 @@ export default function HomeScreen() {
               />
               <Image
                 source={require("../../assets/chun.png")}
-                style={styles.textLogo}
+                style={styles.textLogo2}
                 resizeMode="contain" // Ensures text doesn't stretch weirdly
               />
               {/* <LogoutButton /> */}
@@ -652,9 +652,13 @@ const styles = StyleSheet.create({
     height: 40,
     marginRight: 4,
   },
-  textLogo: {
+  textLogo1: {
     width: 40, // Fixed width usually works better than % for small logos
-    height: 30,
+    height: 40,
+  },
+  textLogo2: {
+    width: 45, // Fixed width usually works better than % for small logos
+    height: 40,
   },
   card: {
     marginLeft: -7,

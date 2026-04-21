@@ -587,7 +587,7 @@ const styles = StyleSheet.create({
   tabTextActive: { color: "#fff", fontWeight: "700" },
   tabTextInactive: { color: "#64748B", fontWeight: "600" },
 
-  content: { padding: 20, gap: 14 },
+  content: { padding: 20, gap: 14, marginBottom: 80 },
 
   // ── Shadow fix ──
   // Outer view: shadow only, no overflow clip

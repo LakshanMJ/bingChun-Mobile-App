@@ -65,7 +65,7 @@ export default function MenuDrawer({ visible, onClose }: MenuDrawerProps) {
         </View>
         <View style={styles.divider} />
         <View style={styles.drawerMenuList}>
-          {['Home', 'Menu', 'About', 'Stores', 'Careers', 'Contact'].map((item) => (
+          {['Home', 'Profile', 'Orders','Stores', 'Contact','Help and Support','About'].map((item) => (
             <Pressable key={item} style={styles.drawerMenuItem} onPress={onClose}>
               <Text style={styles.drawerMenuText}>{item}</Text>
             </Pressable>
