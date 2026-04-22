@@ -30,7 +30,7 @@ TypeScript
 ## 🚀 Getting Started
 1. Clone the repo
 ```bash
-git clone https://github.com/your-username/bing-chun-app.git
+git clone https://github.com/LakshanMJ/bingChun-Mobile-App.git
 cd bing-chun-app
 ```
 3. Install dependencies
