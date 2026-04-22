@@ -6,7 +6,7 @@ Built with performance, clean UI, and smooth interactions in mind.
 Sip it. Scoop it. Love it.
 
 ## ✨ Features
-- 🧋 Browse & Order — Explore drinks, desserts, and combos
+- 🥤 Browse & Order — Explore drinks, desserts, and combos
 - 📦 Live Order Tracking — Real-time delivery progress UI
 - ❤️ Favourites System — Quickly reorder your go-to picks
 - 🔁 Reorder in One Tap — No friction, just cravings
