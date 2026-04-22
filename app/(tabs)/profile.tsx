@@ -55,7 +55,7 @@ export default function ProfileScreen() {
                         <View style={styles.onlineDot} />
                     </View>
 
-                    <Text style={styles.userName}>Lakshan Jay</Text>
+                    <Text style={styles.userName}>Alex Morgan</Text>
                     <Text style={styles.userSub}>Member since 2023</Text>
 
                     <View style={styles.statsPill}>
