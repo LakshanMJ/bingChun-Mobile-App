@@ -64,7 +64,7 @@ The focus:
 - Craving-driven UX
 ## 📸 Preview
 
-(Add screenshots or screen recordings here)
+[![Watch Demo](./assets/demo-thumbnail.png)](https://www.youtube.com/watch?v=ahaSigPGqPY)
 
 ## 🧠 Future Improvements
 - 💳 Payment integration
